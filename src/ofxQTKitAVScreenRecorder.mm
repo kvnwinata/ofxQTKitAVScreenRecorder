@@ -21,19 +21,19 @@ ofxQTKitAVScreenRecorder::~ofxQTKitAVScreenRecorder() {
 }  
 
 void ofxQTKitAVScreenRecorder::setup() {
-    initAudio(); 
+    //initAudio();
 }
 
 void ofxQTKitAVScreenRecorder::initAudio() {
     //initialize the audio source
     audioTrack.initAudioGrabber();
-    audioTrack.setAudioDeviceID("Built-in Microphone");
+    audioTrack.setAudioDeviceID("Sound Blaster Recon3D");  //Try "Built-in Input"  "Built-in Microphone" "Plantronics Headset" or "Samson GoMic"
     audioTrack.setAudioCodec("QTCompressionOptionsVoiceQualityAACAudio");  //maybe choose a different codec? This one seems rather poor. 
     audioTrack.initAudioRecording(); 
 }
 
 
-void ofxQTKitAVScreenRecorder::initAVRecording() {
+void ofxQTKitAVScreenRecorder::initAVRecording(string appName) {
     
     //temp audio file
     char $audiofilename[1024];
@@ -55,16 +55,21 @@ void ofxQTKitAVScreenRecorder::initAVRecording() {
     char $temp[1024];
 	now = time(NULL);
 	struct tm *ts3 = localtime(&now);
-	strftime($temp, sizeof($temp), "%m_%d_%H_%M_%S_telekinectRecording.mov", ts3);
-    selfContainedFullPath = ofToDataPath(string($temp));
+	strftime($temp, sizeof($temp), "%m_%d_%H_%M_%S", ts3);
+
+    //Saving the final file to the users desktop (so it doesn't go in our repo). 
+    string path(getenv("HOME"));
+    path += "/Desktop/" + appName + "_Recording_" + string($temp) + ".mov"; 
+
+    selfContainedFullPath = path;
     
     isRecording = true; 
 }
 
-void ofxQTKitAVScreenRecorder::startNewRecording() {
+void ofxQTKitAVScreenRecorder::startNewRecording(string appName) {
     if(!isRecording) {
         recorder.releaseRecording();
-        initAVRecording();
+        initAVRecording(appName);
         stopAddingFrames = false;
     } else {
         printf("/n AUDIO RECORDER: a recording is already in progress "); 

@@ -165,13 +165,17 @@ void ofxQTKitRecorder::flushToFile() {
     }  
 }  
   
+
+//Note for developers - if you are recording 32 bit images you may need to use NSCalibratedRGBColor space
+//Also, I don't know if @"mp4v" or @"jpeg" is faster.... 
+
 void ofxQTKitRecorder::outputFrame(ofPixels& framePixels, unsigned long frameDurationMS) {  
     assert(frameDurationMS > 0);  
     QTTime duration = QTMakeTimeWithTimeInterval(static_cast<double>(frameDurationMS) / 1000.0);  
   
     NSDictionary* attributesDictionary =  
         [NSDictionary dictionaryWithObjectsAndKeys:  
-            @"jpeg", QTAddImageCodecType,  
+            @"mp4v", QTAddImageCodecType,  
             [NSNumber numberWithLong:codecNormalQuality], QTAddImageCodecQuality,  
             nil];  
   
@@ -189,15 +193,16 @@ void ofxQTKitRecorder::outputFrame(ofPixels& framePixels, unsigned long frameDur
             pixelsHigh:imageHeight  
             bitsPerSample:bitsPerChannel  
             samplesPerPixel:numChannels  
-            hasAlpha:NO  
+            hasAlpha:(numChannels > 3) ? YES : NO    //boolean-value ? if-true-this-executes : if-false-this-executes;
             isPlanar:NO  
-            colorSpaceName:(bitsPerPixel <= 8) ? NSDeviceWhiteColorSpace : NSDeviceRGBColorSpace  
+            colorSpaceName:NSCalibratedRGBColorSpace // NSDeviceWhiteColorSpace : NSDeviceRGBColorSpace  //this gets rid of wierd compression issues.
             bytesPerRow:bytesPerRow  
             bitsPerPixel:bitsPerPixel];  
-    [imageRep autorelease];  
+    //[imageRep autorelease];  
     NSImage* frameNSImage = [[[NSImage alloc] initWithSize:NSMakeSize(imageWidth, imageHeight)] autorelease];  
     [frameNSImage addRepresentation:imageRep];  
-    [qtMovie addImage:frameNSImage forDuration:duration withAttributes:attributesDictionary];  
+    [qtMovie addImage:frameNSImage forDuration:duration withAttributes:attributesDictionary];
+    [imageRep release];
 }
 
 

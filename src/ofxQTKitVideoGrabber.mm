@@ -726,7 +726,7 @@ static inline void argb_to_rgb(unsigned char* src, unsigned char* dst, int numPi
 		ofLog(OF_LOG_ERROR, "ofxQTKitVideoGrabber -- Could not pause for video settings");
 	}
 	
-	static SGModalFilterUPP gSeqGrabberModalFilterUPP = NewSGModalFilterUPP(SeqGrabberModalFilterUPP);
+	static SGModalFilterUPP gSeqGrabberModalFilterUPP = NewSGModalFilterUPP(gSeqGrabberModalFilterUPP);
 	err = SGGetIndChannel(sg, 1, &chan, &type );
 	if (err == noErr){
 		ComponentResult result = SGSettingsDialog(sg, chan, 0, NULL, 0, gSeqGrabberModalFilterUPP, 0 );
@@ -768,7 +768,7 @@ static inline void argb_to_rgb(unsigned char* src, unsigned char* dst, int numPi
 		ofLog(OF_LOG_ERROR, "ofxQTKitVideoGrabber -- Could not pause for audio settings");
 	}
 	
-	static SGModalFilterUPP gSeqGrabberModalFilterUPP = NewSGModalFilterUPP(SeqGrabberModalFilterUPP);
+	static SGModalFilterUPP gSeqGrabberModalFilterUPP = NewSGModalFilterUPP(gSeqGrabberModalFilterUPP);
 	err = SGGetIndChannel(sg, 1, &chan, &type );
 	if (err == noErr){
 		ComponentResult result = SGSettingsDialog(sg, chan, 0, NULL, 0, gSeqGrabberModalFilterUPP, 0 );

@@ -23,11 +23,12 @@ public:
     void update(); 
     void exit(); 
     void initAudio(); 
-    void initAVRecording();
-    void startNewRecording(); 
+    void initAVRecording(string appName);
+    void startNewRecording(string appName); 
     void finishMovie(bool exiting=false); 
     void addFrame(ofPixels& framePixels); 
     bool getIsRecording() { return isRecording; }
+    int getAddAudioTrack() { return addAudioTrack; }
     
     string audioFullPath;
     string videoFullPath;

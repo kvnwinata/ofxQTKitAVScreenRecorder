@@ -65,9 +65,9 @@ class ofxQTKitVideoGrabber : public ofBaseVideo
 	ofxQTKitVideoGrabber();
 	~ofxQTKitVideoGrabber();
 
-#if OF_VERSION == 7
+//#if OF_VERSION == 7
 	ofPixelsRef		getPixelsRef(){ofPixels p; return p;}; //TODO: make this work (satisfies abstract class requirement)
-#endif
+//#endif
 	
 	void			initGrabber(int w, int h, bool buseAudio = false);
 	void			grabFrame();
